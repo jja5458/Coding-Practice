@@ -1,0 +1,59 @@
+// 443. String Compression
+// Given an array of characters chars, compress it using the following algorithm:
+// Begin with an empty string s. For each group of consecutive repeating characters in chars:
+// If the group's length is 1, append the character to s.
+// Otherwise, append the character followed by the group's length.
+// The compressed string s should not be returned separately, but instead, be stored in the input character array chars. Note that group lengths that are 10 or longer will be split into multiple characters in chars.
+// After you are done modifying the input array, return the new length of the array.
+// You must write an algorithm that uses only constant extra space.
+
+// Approach (First Try)
+// Look through the entire array
+// Initialize the empty s string 
+// Assign the first element in the arrary to s
+// while s is equal to element in array, count the number of instances
+// store the character and count in the first two elements of the array, repeat
+// return the array
+
+// Approach (Correct)
+//1. Ininitialize Pointers and Counters
+    // Read Pointer to iterate over the characters in 'chars'
+    // Write Pointer to update the cahracters in 'chars'
+    // Counter to keep track of how many times each character repeats consecutively
+//2. Iterate throuh 'chars'(array)
+    //when you reach a different character or end of the array
+        // write the character that just ended its repetition to the position indicated by the writer pointer
+        // if counter is greater than 1. convert the count to a string and write each digit to 'chars' array
+        // reset the counter and continue looking for the nextgroup of characters 
+//3. Update 'Chars' In-Place: 
+//4. Return the New Length: 
+
+class Solution {
+public:
+    int compress(vector<char>& chars) {
+        int i = 0; // Start pointer for each group of characters
+        int res = 0; // Write pointer for the compressed result in chars array
+
+        while (i < chars.size()) { // Loop through all characters in the array
+            int groupLength = 1; // Start with a single character in the group
+            // Count how many times the current character repeats consecutively
+            while (i + groupLength < chars.size() && chars[i + groupLength] == chars[i]) {
+                groupLength++;
+            }
+            
+            chars[res++] = chars[i]; // Write the current character to the compressed array
+
+            // If the group of characters is more than one, append the count
+            if (groupLength > 1) {
+                // Convert the count to a string and write each character of the count
+                for (char c : to_string(groupLength)) {
+                    chars[res++] = c;
+                }
+            }
+
+            i += groupLength; // Move the index i to the start of the next group of characters
+        }
+
+        return res; // Return the new length of the array after compression
+    }
+};
